@@ -14,7 +14,7 @@ use std::{fmt, os::unix::io::RawFd};
 pub use iop::RawEvent;
 pub use std::{
     io::{Error, Result},
-    time::SystemTime as Time,
+    time::Duration as Time,
 };
 pub use types::{
     Active, Bias, BitId, Direction, Drive, Edge, EdgeDetect, Event, LineId, LineInfo, LineMap,

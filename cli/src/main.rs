@@ -122,8 +122,10 @@ fn main() -> anyhow::Result<()> {
             for event in input {
                 let event = event?;
                 println!(
-                    "line {}: {}-edge [{:?}]",
-                    lines[event.line as usize], event.edge, event.time,
+                    "line {}: {}-edge [{}]",
+                    lines[event.line as usize],
+                    event.edge,
+                    event.time.as_nanos(),
                 );
             }
         }

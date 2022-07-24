@@ -250,9 +250,9 @@ impl fmt::Display for Event {
         '#'.fmt(f)?;
         self.line.fmt(f)?;
         ' '.fmt(f)?;
-        self.edge.fmt(f)
-        //' '.fmt(f)?;
-        //(&self.time as &dyn fmt::Debug).fmt(f)
+        self.edge.fmt(f)?;
+        ' '.fmt(f)?;
+        self.time.as_nanos().fmt(f)
     }
 }
 

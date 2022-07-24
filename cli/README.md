@@ -119,8 +119,8 @@ $ gpio set gpiochip0 21=1
 Monitor line values:
 ```
 $ gpio mon gpiochip0 22 27
-line 27: rising-edge [SystemTime { tv_sec: 408914, tv_nsec: 219966626 }]
-line 27: falling-edge [SystemTime { tv_sec: 408914, tv_nsec: 269983903 }]
-line 27: rising-edge [SystemTime { tv_sec: 408929, tv_nsec: 620077211 }]
-line 27: falling-edge [SystemTime { tv_sec: 408929, tv_nsec: 670091118 }]
+line 27: rising-edge [408914.219966626]
+line 27: falling-edge [408914.269983903]
+line 27: rising-edge [408929.620077211]
+line 27: falling-edge [408929.670091118]
 ```

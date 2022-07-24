@@ -140,8 +140,10 @@ async fn main() -> anyhow::Result<()> {
             loop {
                 let event = input.read_event().await?;
                 println!(
-                    "line {}: {}-edge [{:?}]",
-                    lines[event.line as usize], event.edge, event.time,
+                    "line {}: {}-edge [{}]",
+                    lines[event.line as usize],
+                    event.edge,
+                    event.time.as_nanos(),
                 );
             }
         }
