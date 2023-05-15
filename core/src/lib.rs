@@ -250,7 +250,7 @@ impl<Direction, Lines, OldConsumer> Options<Direction, Lines, OldConsumer> {
 }
 
 impl<Direction, Lines, Consumer> Options<Direction, Lines, Consumer> {
-    /// Configure GPIO lines astive state
+    /// Configure GPIO lines active state
     ///
     /// Available both for inputs and outputs
     pub fn active(mut self, active: Active) -> Self {
