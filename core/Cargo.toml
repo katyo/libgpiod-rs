@@ -1,7 +1,7 @@
 [package]
 name = "gpiod-core"
 description = "Linux GPIO character device interfacing"
-version = "0.2.3"
+version = "0.3.0"
 authors = ["Joao Rebelo <2730147+jrebelo@users.noreply.github.com>", "K. <kayo@illumium.org>"]
 license = "MIT"
 readme = "README.md"

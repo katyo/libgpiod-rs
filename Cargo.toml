@@ -54,7 +54,7 @@ default-features = false
 [package]
 name = "gpiod"
 description = "Linux GPIO character device interfacing"
-version = "0.2.3"
+version = "0.3.0"
 authors = ["K. <kayo@illumium.org>"]
 license = "MIT"
 readme = "README.md"
