@@ -10,17 +10,16 @@ keywords = ["libgpiod", "GPIO", "Linux", "async", "tokio"]
 edition = "2021"
 
 [dependencies.gpiod-core]
-path = "../core"
-version = "0.2.3"
+workspace = true
 default-features = false
 
 [dependencies.tokio]
-version = "1"
+workspace = true
 default-features = false
 features = ["fs", "io-util", "rt", "net"]
 
 [dev-dependencies.tokio]
-version = "1"
+workspace = true
 features = ["macros", "rt-multi-thread"]
 
 [features]

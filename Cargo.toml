@@ -1,3 +1,38 @@
+[workspace]
+members = ["core", "tokio", "async-std", "cli", "cli/tokio", "cli/async-std"]
+resolver = "2"
+
+[workspace.dependencies]
+async-io = "1"
+async-std = "1"
+anyhow = "1"
+clap_complete = "4"
+clap_mangen = "0.2"
+
+[workspace.dependencies.nix]
+version = "0.26"
+default-features = false
+
+[workspace.dependencies.clap]
+version = "4"
+features = ["derive"]
+
+[workspace.dependencies.serde]
+version = "1"
+features = ["derive"]
+
+[workspace.dependencies.tokio]
+version = "1"
+default-features = false
+
+[workspace.dependencies.gpiod-core]
+path = "core"
+default-features = false
+
+[workspace.dependencies.gpiod]
+path = ""
+default-features = false
+
 [package]
 name = "gpiod"
 description = "Linux GPIO character device interfacing"
@@ -9,12 +44,8 @@ categories = ["os", "os::linux-apis"]
 keywords = ["libgpiod", "GPIO", "Linux", "chardev", "ioctl"]
 edition = "2021"
 
-[workspace]
-members = ["core", "tokio", "async-std", "cli", "cli/tokio", "cli/async-std"]
-
 [dependencies.gpiod-core]
-path = "core"
-version = "0.2.3"
+workspace = true
 default-features = false
 
 [features]

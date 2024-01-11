@@ -10,20 +10,16 @@ keywords = ["libgpiod", "GPIO", "Linux", "chardev", "ioctl"]
 edition = "2021"
 
 [dependencies.nix]
-version = "0.26"
+workspace = true
 default-features = false
 features = ["ioctl", "fs"]
 
 [dependencies.clap]
-version = "4"
-default-features = false
-features = ["std", "derive"]
+workspace = true
 optional = true
 
 [dependencies.serde]
-version = "1"
-default-features = false
-features = ["std", "derive"]
+workspace = true
 optional = true
 
 [features]

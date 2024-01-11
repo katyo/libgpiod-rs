@@ -15,44 +15,41 @@ name = "gpio"
 path = "src/main.rs"
 
 [dependencies.gpiod]
-path = ".."
-version = "0.2.3"
+workspace = true
 default-features = false
 features = ["clap"]
 
 [dependencies.anyhow]
-version = "1"
+workspace = true
 
 [dependencies.clap]
-version = "4"
-features = ["std", "derive"]
+workspace = true
+features = ["derive"]
 
 [dependencies.clap_complete]
-version = "4"
+workspace = true
 optional = true
 
 [build-dependencies.anyhow]
-version = "1"
+workspace = true
 optional = true
 
 [build-dependencies.gpiod]
-path = ".."
-version = "0.2.3"
+workspace = true
 default-features = false
 features = ["clap"]
 optional = true
 
 [build-dependencies.clap]
-version = "4"
-features = ["std", "derive"]
+workspace = true
 optional = true
 
 [build-dependencies.clap_mangen]
-version = "0.2"
+workspace = true
 optional = true
 
 [build-dependencies.clap_complete]
-version = "4"
+workspace = true
 optional = true
 
 [features]

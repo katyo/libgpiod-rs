@@ -10,18 +10,17 @@ keywords = ["libgpiod", "GPIO", "Linux", "async", "async-std"]
 edition = "2021"
 
 [dependencies.gpiod-core]
-path = "../core"
-version = "0.2.3"
+workspace = true
 default-features = false
 
 [dependencies.async-io]
-version = "1"
+workspace = true
 
 [dependencies.async-std]
-version = "1"
+workspace = true
 
 [dev-dependencies.async-std]
-version = "1"
+workspace = true
 features = ["attributes"]
 
 [features]
