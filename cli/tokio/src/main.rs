@@ -7,7 +7,7 @@ async fn main() -> anyhow::Result<()> {
 
     match args.cmd {
         Cmd::Detect => {
-            let chips = futures::future::join_all(
+            let chips = futures_util::future::join_all(
                 gpiod::Chip::list_devices()
                     .await?
                     .into_iter()
@@ -24,7 +24,7 @@ async fn main() -> anyhow::Result<()> {
         }
 
         Cmd::Info { chip } => {
-            let chips = futures::future::join_all(
+            let chips = futures_util::future::join_all(
                 gpiod::Chip::list_devices()
                     .await?
                     .into_iter()

@@ -15,7 +15,7 @@ use std::{
     path::{Path, PathBuf},
 };
 
-use gpiod_core::{invalid_input, major, minor, Internal, Result};
+use gpiod_core::{invalid_input, major, minor, AsDevicePath, Internal, Result};
 
 pub use gpiod_core::{
     Active, AsValues, AsValuesMut, Bias, BitId, ChipInfo, Direction, DirectionType, Drive, Edge,
@@ -120,22 +120,12 @@ impl fmt::Display for Chip {
 
 impl Chip {
     /// Create a new GPIO chip interface using path
-    pub fn new(path: impl AsRef<Path>) -> Result<Chip> {
-        let path = path.as_ref();
+    pub fn new(device: impl AsDevicePath) -> Result<Chip> {
+        let path = device.as_device_path();
 
-        #[allow(unused_assignments)]
-        let mut full_path = None;
-
-        let path = if path.starts_with("/dev") {
-            path
-        } else {
-            full_path = Path::new("/dev").join(path).into();
-            full_path.as_ref().unwrap()
-        };
+        Chip::check_device(&path)?;
 
         let file = OpenOptions::new().read(true).write(true).open(path)?;
-
-        Chip::check_device(path)?;
 
         Ok(Chip {
             info: Internal::<ChipInfo>::from_fd(file.as_raw_fd())?,
@@ -153,7 +143,7 @@ impl Chip {
     }
 
     fn check_device(path: &Path) -> Result<()> {
-        let metadata = fs::symlink_metadata(&path)?;
+        let metadata = fs::symlink_metadata(path)?;
 
         /* Is it a character device? */
         if !metadata.file_type().is_char_device() {

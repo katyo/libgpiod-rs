@@ -9,6 +9,9 @@ categories = ["os", "os::linux-apis", "asynchronous"]
 keywords = ["libgpiod", "GPIO", "Linux", "async", "tokio"]
 edition = "2021"
 
+[dependencies]
+libc.workspace = true
+
 [dependencies.gpiod-core]
 workspace = true
 default-features = false

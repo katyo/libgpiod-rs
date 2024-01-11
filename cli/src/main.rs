@@ -49,7 +49,7 @@ fn main() -> anyhow::Result<()> {
             chip,
             lines,
         } => {
-            let chip = gpiod::Chip::new(&chip)?;
+            let chip = gpiod::Chip::new(chip)?;
 
             let input = chip.request_lines(
                 gpiod::Options::input(&lines)
@@ -76,7 +76,7 @@ fn main() -> anyhow::Result<()> {
             chip,
             line_values,
         } => {
-            let chip = gpiod::Chip::new(&chip)?;
+            let chip = gpiod::Chip::new(chip)?;
 
             let (lines, values): (Vec<_>, Vec<_>) = line_values
                 .into_iter()
@@ -109,7 +109,7 @@ fn main() -> anyhow::Result<()> {
             chip,
             lines,
         } => {
-            let chip = gpiod::Chip::new(&chip)?;
+            let chip = gpiod::Chip::new(chip)?;
 
             let input = chip.request_lines(
                 gpiod::Options::input(&lines)

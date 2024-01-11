@@ -1,6 +1,6 @@
 [package]
-name = "async-std-gpiod"
-description = "Linux GPIO character device interfacing with async-std"
+name = "async-gpiod"
+description = "Linux GPIO character device with async interface"
 version = "0.2.3"
 authors = ["K. <kayo@illumium.org>"]
 license = "MIT"
@@ -9,19 +9,19 @@ categories = ["os", "os::linux-apis", "asynchronous"]
 keywords = ["libgpiod", "GPIO", "Linux", "async", "async-std"]
 edition = "2021"
 
+[dependencies]
+futures-lite.workspace = true
+async-io.workspace = true
+async-fs.workspace = true
+blocking.workspace = true
+
 [dependencies.gpiod-core]
 workspace = true
 default-features = false
 
-[dependencies.async-io]
-workspace = true
-
-[dependencies.async-std]
-workspace = true
-
-[dev-dependencies.async-std]
-workspace = true
-features = ["attributes"]
+[dev-dependencies]
+smol.workspace = true
+smol-potat.workspace = true
 
 [features]
 default = ["v2"]

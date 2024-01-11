@@ -1,10 +1,16 @@
 [workspace]
-members = ["core", "tokio", "async-std", "cli", "cli/tokio", "cli/async-std"]
+members = ["core", "tokio", "async", "cli", "cli/tokio", "cli/async"]
 resolver = "2"
 
 [workspace.dependencies]
-async-io = "1"
-async-std = "1"
+libc = "0.2"
+futures-lite = "2"
+futures-util = "0.3"
+async-io = "2"
+async-fs = "2"
+blocking = "1"
+smol = "2"
+smol-potat = "1"
 anyhow = "1"
 clap_complete = "4"
 clap_mangen = "0.2"
@@ -31,6 +37,18 @@ default-features = false
 
 [workspace.dependencies.gpiod]
 path = ""
+default-features = false
+
+[workspace.dependencies.gpiod-cli]
+path = "cli"
+default-features = false
+
+[workspace.dependencies.tokio-gpiod]
+path = "tokio"
+default-features = false
+
+[workspace.dependencies.async-gpiod]
+path = "async"
 default-features = false
 
 [package]

@@ -1,13 +1,13 @@
-#[async_std::main]
+#[smol_potat::main]
 async fn main() -> anyhow::Result<()> {
-    use async_std_gpiod as gpiod;
+    use async_gpiod as gpiod;
     use gpiod_cli::{Args, Cmd};
 
     let args: Args = clap::Parser::parse();
 
     match args.cmd {
         Cmd::Detect => {
-            let chips = futures::future::join_all(
+            let chips = futures_util::future::join_all(
                 gpiod::Chip::list_devices()
                     .await?
                     .into_iter()
@@ -24,7 +24,7 @@ async fn main() -> anyhow::Result<()> {
         }
 
         Cmd::Info { chip } => {
-            let chips = futures::future::join_all(
+            let chips = futures_util::future::join_all(
                 gpiod::Chip::list_devices()
                     .await?
                     .into_iter()

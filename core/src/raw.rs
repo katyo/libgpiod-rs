@@ -3,8 +3,8 @@ pub mod v1;
 #[cfg(feature = "v2")]
 pub mod v2;
 
-pub(self) const GPIO_MAX_NAME_SIZE: usize = 32;
-pub(self) const GPIO_MAGIC: u8 = 0xB4;
+const GPIO_MAX_NAME_SIZE: usize = 32;
+const GPIO_MAGIC: u8 = 0xB4;
 
 // All the structs used for ioctl must be represented in C otherwise weird memory mappings happen.
 //

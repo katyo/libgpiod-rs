@@ -14,6 +14,7 @@ use std::{fmt, os::unix::io::RawFd};
 pub use iop::RawEvent;
 pub use std::{
     io::{Error, Result},
+    path::{Path, PathBuf},
     time::Duration as Time,
 };
 pub use types::{
@@ -27,6 +28,86 @@ macro_rules! unsafe_call {
         unsafe { $res }.map_err(Error::from)
     };
 }
+
+/// Device path trait
+pub trait AsDevicePath {
+    /// Get absolute device path
+    fn as_device_path(&self) -> PathBuf;
+}
+
+impl AsDevicePath for Path {
+    fn as_device_path(&self) -> PathBuf {
+        if self.is_absolute() {
+            self.to_path_buf()
+        } else {
+            Path::new("/dev").join(self)
+        }
+    }
+}
+
+impl AsDevicePath for &Path {
+    fn as_device_path(&self) -> PathBuf {
+        if self.is_absolute() {
+            self.to_path_buf()
+        } else {
+            Path::new("/dev").join(self)
+        }
+    }
+}
+
+impl AsDevicePath for PathBuf {
+    fn as_device_path(&self) -> PathBuf {
+        let path: &Path = self;
+        path.as_device_path()
+    }
+}
+
+impl AsDevicePath for &PathBuf {
+    fn as_device_path(&self) -> PathBuf {
+        let path: &Path = self;
+        path.as_device_path()
+    }
+}
+
+impl AsDevicePath for &str {
+    fn as_device_path(&self) -> PathBuf {
+        Path::new(self).as_device_path()
+    }
+}
+
+impl AsDevicePath for String {
+    fn as_device_path(&self) -> PathBuf {
+        let s: &str = self;
+        s.as_device_path()
+    }
+}
+
+impl AsDevicePath for &String {
+    fn as_device_path(&self) -> PathBuf {
+        let s: &str = self;
+        s.as_device_path()
+    }
+}
+
+impl AsDevicePath for usize {
+    fn as_device_path(&self) -> PathBuf {
+        format!("/dev/gpiochip{self}").as_device_path()
+    }
+}
+
+macro_rules! as_device_path {
+    ($($type:ty),*) => {
+        $(
+            impl AsDevicePath for $type {
+                fn as_device_path(&self) -> PathBuf {
+                    (*self as usize).as_device_path()
+                }
+            }
+        )*
+    };
+}
+
+as_device_path!(u8, u16, u32, u64, i8, i16, i32, i64, isize);
 
 /// Wrapper to hide internals
 #[derive(Clone, Copy, Default)]

@@ -24,4 +24,4 @@ Deprecated sysfs-based API (linux < 4.0) currently is not supported at all.
 - **[gpiod-core](https://crates.io/crates/gpiod-core)** - core abstractions and low level interface (not for end users)
 - [gpiod](https://crates.io/crates/gpiod) - sync interface which supports synchronous operation only
 - [tokio-gpiod](https://crates.io/crates/tokio-gpiod) - async interface for [tokio](https://tokio.rs/) fans
-- [async-std-gpiod](https://crates.io/crates/async-std-gpiod) - async interface for [async-std](https://async.rs/) fans
+- [async-gpiod](https://crates.io/crates/async-gpiod) - async interface to use with non-tokio async runtimes

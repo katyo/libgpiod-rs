@@ -14,34 +14,27 @@ publish = false
 name = "tgpio"
 path = "src/main.rs"
 
+[dependencies]
+anyhow.workspace = true
+clap.workspace = true
+futures-util.workspace = true
+
 [dependencies.tokio-gpiod]
-path = "../../tokio"
-version = "0.2.3"
+workspace = true
 default-features = false
 features = ["clap"]
 
 [dependencies.gpiod-cli]
-path = ".."
-version = "0.2.3"
+workspace = true
 default-features = false
 features = ["clap"]
 
-[dependencies.anyhow]
-version = "1"
-
-[dependencies.clap]
-version = "4"
-features = ["std", "derive"]
-
-[dependencies.futures]
-version = "0.3"
-
 [dependencies.tokio]
-version = "1"
+workspace = true
 features = ["rt-multi-thread", "macros"]
 
 [dependencies.clap_complete]
-version = "4"
+workspace = true
 optional = true
 
 [features]

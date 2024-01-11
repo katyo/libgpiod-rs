@@ -1,19 +1,19 @@
 #![doc = include_str!("../README.md")]
 
 use std::{
-    fmt,
+    fs::{File, OpenOptions},
+    io::Read,
     marker::PhantomData,
     ops::Deref,
     os::unix::{
         fs::{FileTypeExt, MetadataExt},
-        io::{AsRawFd, FromRawFd, RawFd},
+        io::{AsRawFd, FromRawFd},
     },
-    pin::Pin,
+    path::{Path, PathBuf},
     sync::Arc,
-    task::{Context, Poll},
 };
 
-use gpiod_core::{invalid_input, major, minor, set_nonblock, Internal, Result};
+use gpiod_core::{invalid_input, major, minor, set_nonblock, AsDevicePath, Internal, Result};
 
 pub use gpiod_core::{
     Active, AsValues, AsValuesMut, Bias, BitId, ChipInfo, Direction, DirectionType, Drive, Edge,
@@ -21,60 +21,10 @@ pub use gpiod_core::{
     MAX_BITS, MAX_VALUES,
 };
 
+use async_fs as fs;
 use async_io::Async;
-use async_std::{
-    fs,
-    fs::OpenOptions,
-    io::{Read, ReadExt},
-    os::unix::fs::OpenOptionsExt,
-    path::{Path, PathBuf},
-    stream::StreamExt,
-    task::spawn_blocking as asyncify,
-};
-
-#[doc(hidden)]
-pub struct File {
-    // use file to call close when drop
-    inner: Async<std::fs::File>,
-}
-
-impl File {
-    pub fn from_fd(fd: RawFd) -> Result<Self> {
-        let file = unsafe { std::fs::File::from_raw_fd(fd) };
-        Ok(Self {
-            inner: Async::new(file)?,
-        })
-    }
-
-    pub fn from_file(file: fs::File) -> Result<Self> {
-        let fd = file.as_raw_fd();
-        core::mem::forget(file);
-        Self::from_fd(fd)
-    }
-}
-
-impl AsRawFd for File {
-    fn as_raw_fd(&self) -> RawFd {
-        self.inner.as_raw_fd()
-    }
-}
-
-impl Read for File {
-    fn poll_read(
-        self: Pin<&mut Self>,
-        cx: &mut Context<'_>,
-        buf: &mut [u8],
-    ) -> Poll<Result<usize>> {
-        use std::io::Read;
-
-        match self.inner.poll_readable(cx) {
-            Poll::Ready(x) => x,
-            Poll::Pending => return Poll::Pending,
-        }?;
-
-        Poll::Ready(self.inner.get_ref().read(buf))
-    }
-}
+use blocking::unblock as asyncify;
+use futures_lite::stream::StreamExt;
 
 /// The interface for getting the values of GPIO lines configured for input
 ///
@@ -84,7 +34,7 @@ pub struct Lines<Direction> {
     dir: PhantomData<Direction>,
     info: Arc<Internal<ValuesInfo>>,
     // wrap file to call close on drop
-    file: File,
+    file: Async<File>,
 }
 
 impl<Direction> Deref for Lines<Direction> {
@@ -121,9 +71,12 @@ impl Lines<Input> {
 
         #[cfg(feature = "v2")]
         {
-            let mut event = gpiod_core::RawEvent::default();
+            self.file.readable().await?;
 
-            gpiod_core::check_size(self.file.read(event.as_mut()).await?, &event)?;
+            let mut event = gpiod_core::RawEvent::default();
+            let len = self.file.get_ref().read(event.as_mut())?;
+
+            gpiod_core::check_size(len, &event)?;
 
             event.as_event(self.info.index())
         }
@@ -149,7 +102,7 @@ impl Lines<Output> {
 pub struct Chip {
     info: Arc<Internal<ChipInfo>>,
     // wrap file to call close on drop
-    file: File,
+    file: Async<File>,
 }
 
 impl Deref for Chip {
@@ -160,39 +113,22 @@ impl Deref for Chip {
     }
 }
 
-impl fmt::Display for Chip {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+impl core::fmt::Display for Chip {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         self.info.fmt(f)
     }
 }
 
-const O_NONBLOCK: i32 = 2048;
-
 impl Chip {
     /// Create a new GPIO chip interface using path
-    pub async fn new(path: impl AsRef<Path>) -> Result<Chip> {
-        let path = path.as_ref();
+    pub async fn new(device: impl AsDevicePath) -> Result<Chip> {
+        let path = device.as_device_path();
 
-        #[allow(unused_assignments)]
-        let mut full_path = None;
+        Chip::check_device(path.as_ref()).await?;
 
-        let path = if path.starts_with("/dev") {
-            path
-        } else {
-            full_path = Path::new("/dev").join(path).into();
-            full_path.as_ref().unwrap()
-        };
-
-        let file = File::from_file(
-            OpenOptions::new()
-                .read(true)
-                .write(true)
-                .custom_flags(O_NONBLOCK)
-                .open(path)
-                .await?,
+        let file = Async::new(
+            asyncify(move || OpenOptions::new().read(true).write(true).open(path)).await?,
         )?;
-
-        Chip::check_device(path).await?;
 
         let fd = file.as_raw_fd();
         let info = Arc::new(asyncify(move || Internal::<ChipInfo>::from_fd(fd)).await?);
@@ -266,7 +202,7 @@ impl Chip {
         })
         .await?;
 
-        let file = File::from_fd(fd)?;
+        let file = Async::new(unsafe { File::from_raw_fd(fd) })?;
         let info = Arc::new(info);
 
         Ok(Lines {

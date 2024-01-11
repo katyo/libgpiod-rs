@@ -1,5 +1,5 @@
 [package]
-name = "async-std-gpiod-cli"
+name = "async-gpiod-cli"
 description = "Linux GPIO character device interfacing (utils)"
 version = "0.2.3"
 authors = ["K. <kayo@illumium.org>"]
@@ -14,37 +14,28 @@ publish = false
 name = "agpio"
 path = "src/main.rs"
 
-[dependencies.async-std-gpiod]
-path = "../../async-std"
-version = "0.2.3"
+[dependencies]
+anyhow.workspace = true
+clap.workspace = true
+futures-util.workspace = true
+smol.workspace = true
+smol-potat.workspace = true
+
+[dependencies.async-gpiod]
+workspace = true
 default-features = false
 features = ["clap"]
 
 [dependencies.gpiod-cli]
-path = ".."
-version = "0.2.3"
+workspace = true
 default-features = false
 features = ["clap"]
 
-[dependencies.anyhow]
-version = "1"
-
-[dependencies.clap]
-version = "4"
-features = ["std", "derive"]
-
-[dependencies.futures]
-version = "0.3"
-
-[dependencies.async-std]
-version = "1"
-features = ["attributes"]
-
 [dependencies.clap_complete]
-version = "4"
+workspace = true
 optional = true
 
 [features]
 default = ["v2", "complete"]
-v2 = ["async-std-gpiod/v2", "gpiod-cli/v2"]
+v2 = ["async-gpiod/v2", "gpiod-cli/v2"]
 complete = ["clap_complete", "gpiod-cli/complete"]
