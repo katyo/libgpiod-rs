@@ -9,7 +9,7 @@ This crate contains command-line tools based on gpiod library:
 
 - `gpio` - based on std sync runtime
 - `tgpio` - base on [tokio](https://tokio.rs/) async runtime
-- `agpio` - based on [async-std](https://async.rs/) async runtime
+- `agpio` - based on [smol](https://github.com/smol-rs/smol) async runtime
 
 It provides an interface to the Linux GPIO using the chardev module.
 This interface involves calling [ioctl](https://man7.org/linux/man-pages/man2/ioctl.2.html) funcions which are unsafe and require some unintuitive variable mapping.
@@ -28,7 +28,7 @@ Deprecated sysfs-based API (linux < 4.0) currently is not supported at all.
 - [gpiod-core](https://crates.io/crates/gpiod-core) - core abstractions and low level interface (not for end users)
 - [gpiod](https://crates.io/crates/gpiod) - sync interface which supports synchronous operation only
 - [tokio-gpiod](https://crates.io/crates/tokio-gpiod) - async interface for [tokio](https://tokio.rs/) fans
-- [async-std-gpiod](https://crates.io/crates/async-std-gpiod) - async interface for [async-std](https://async.rs/) fans
+- [async-gpiod](https://crates.io/crates/async-gpiod) - async interface for various async runtimes
 
 ## Usage examples
 
