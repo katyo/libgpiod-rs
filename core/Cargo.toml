@@ -1,13 +1,15 @@
 [package]
 name = "gpiod-core"
 description = "Linux GPIO character device interfacing"
-version = "0.3.0"
-authors = ["Joao Rebelo <2730147+jrebelo@users.noreply.github.com>", "K. <kayo@illumium.org>"]
-license = "MIT"
+version.workspace = true
+authors.workspace = true
+license.workspace = true
+edition.workspace = true
+repository.workspace = true
+homepage.workspace = true
 readme = "README.md"
 categories = ["os", "os::linux-apis"]
 keywords = ["libgpiod", "GPIO", "Linux", "chardev", "ioctl"]
-edition = "2021"
 
 [dependencies.nix]
 workspace = true

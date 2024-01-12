@@ -2,6 +2,14 @@
 members = ["core", "tokio", "async", "cli", "cli/tokio", "cli/async"]
 resolver = "2"
 
+[workspace.package]
+version = "0.3.0"
+authors = ["K. <kayo@illumium.org>"]
+license = "MIT"
+edition = "2021"
+repository = "https://github.com/katyo/gpiod-rs"
+homepage = "https://github.com/katyo/gpiod-rs"
+
 [workspace.dependencies]
 libc = "0.2"
 futures-lite = "2"
@@ -54,13 +62,15 @@ default-features = false
 [package]
 name = "gpiod"
 description = "Linux GPIO character device interfacing"
-version = "0.3.0"
-authors = ["K. <kayo@illumium.org>"]
-license = "MIT"
+version.workspace = true
+authors.workspace = true
+license.workspace = true
+edition.workspace = true
+repository.workspace = true
+homepage.workspace = true
 readme = "README.md"
 categories = ["os", "os::linux-apis"]
 keywords = ["libgpiod", "GPIO", "Linux", "chardev", "ioctl"]
-edition = "2021"
 
 [dependencies.gpiod-core]
 workspace = true

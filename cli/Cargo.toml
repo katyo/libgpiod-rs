@@ -1,13 +1,15 @@
 [package]
 name = "gpiod-cli"
 description = "Linux GPIO character device interfacing (utils)"
-version = "0.3.0"
-authors = ["K. <kayo@illumium.org>"]
-license = "MIT"
+version.workspace = true
+authors.workspace = true
+license.workspace = true
+edition.workspace = true
+repository.workspace = true
+homepage.workspace = true
 readme = "README.md"
 categories = ["command-line-utilities"]
 keywords = ["libgpiod", "GPIO", "Linux", "chardev", "ioctl"]
-edition = "2021"
 publish = false
 
 [[bin]]
