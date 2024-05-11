@@ -41,22 +41,27 @@ default-features = false
 
 [workspace.dependencies.gpiod-core]
 path = "core"
+version = "0.3"
 default-features = false
 
 [workspace.dependencies.gpiod]
 path = ""
+version = "0.3"
 default-features = false
 
 [workspace.dependencies.gpiod-cli]
 path = "cli"
+version = "0.3"
 default-features = false
 
 [workspace.dependencies.tokio-gpiod]
 path = "tokio"
+version = "0.3"
 default-features = false
 
 [workspace.dependencies.async-gpiod]
 path = "async"
+version = "0.3"
 default-features = false
 
 [package]
