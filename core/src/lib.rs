@@ -501,7 +501,7 @@ impl Internal<ChipInfo> {
             if let Some(values) = values {
                 let mut data = raw::v1::GpioHandleData::from_values(lines.len(), &values);
 
-                unsafe_call!(raw::v1::gpio_set_line_values(fd, &mut data))?;
+                unsafe_call!(raw::v1::gpio_set_line_values(request.fd, &mut data))?;
             }
 
             request.fd
