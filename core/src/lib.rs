@@ -1,6 +1,6 @@
 #![doc = include_str!("../README.md")]
 
-#[cfg(not(target_os = "linux"))]
+#[cfg(not(any(target_os = "linux", target_os = "android")))]
 compile_error!("This crate support Linux only");
 
 mod iop;
