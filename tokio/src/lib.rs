@@ -14,7 +14,7 @@ use std::{
 };
 
 use gpiod_core::{
-    invalid_input, major, minor, set_nonblock, AsDevicePath, Error, Internal, Result,
+    invalid_input, major, minor, AsDevicePath, Error, Internal, Result,
 };
 
 pub use gpiod_core::{
@@ -140,7 +140,6 @@ impl Chip {
             OpenOptions::new()
                 .read(true)
                 .write(true)
-                .custom_flags(libc::O_NONBLOCK)
                 .open(path)
                 .await?
                 .into_std()
@@ -215,7 +214,6 @@ impl Chip {
 
         let (info, fd) = asyncify(move || {
             let (info, fd) = info.request_lines(fd, options)?;
-            set_nonblock(fd)?;
             Ok((info, fd))
         })
         .await?;
