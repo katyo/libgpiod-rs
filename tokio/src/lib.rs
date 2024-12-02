@@ -81,11 +81,19 @@ impl Lines<Input> {
 
         #[cfg(feature = "v2")]
         {
-            let _ = self.file.readable().await?;
-
             let mut event = gpiod_core::RawEvent::default();
-            let len = self.file.get_ref().read(event.as_mut())?;
+            let len = loop {
+                let mut guard = self.file.readable().await?;
 
+                match guard.try_io(|inner| inner.get_ref().read(event.as_mut())) {
+                    Ok(result) => {
+                        break result?;
+                    }
+                    Err(_would_block) => {
+                        continue;
+                    }
+                }
+            };
             gpiod_core::check_size(len, &event)?;
 
             event.as_event(self.info.index())
